@@ -8,6 +8,13 @@ import {getImage} from "./src/aws.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
+//cors permissions
+import cors from 'cors'
+const corsOptions ={
+    origin:'http://127.0.0.1:3001'
+}
+app.use(cors(corsOptions))
+
 // mysql creds
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -16,6 +23,12 @@ const pool = mysql.createPool({
     password: process.env.MYSQL_PWD,
     database: process.env.MYSQL_DATABASE
 }).promise()
+
+//error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke! Oh no...')
+})
 
 async function getPfp(){
     const pfp_url = await getImage('pfp.png')
@@ -32,12 +45,12 @@ async function getExperiences() {
 
 app.get('/pfp', async (req, res) => {
     const pfp = await getPfp()
-    res.json(pfp)
+    res.status(200).json(pfp)
 })
 
 app.get('/experience', async (req, res) => {
     const experiences = await getExperiences()
-    res.json(experiences)
+    res.status(200).json(experiences)
 })
 
 app.listen(3000)
