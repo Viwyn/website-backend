@@ -1,11 +1,19 @@
 import express from "express"
 const app = express()
 
+import fs from "fs";
+import http from "http";
+import https from "https";
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/viwyn.com/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/viwyn.com/fullchain.pem', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
 //cors permissions
 import cors from 'cors'
 const corsOptions ={
     origin: ['http://127.0.0.1:3001', 'https://viwyn.com', 'https://www.viwyn.com'],
-    
+
 }
 app.use(cors(corsOptions))
 
@@ -19,4 +27,8 @@ import router from "./routes/api.js";
 
 app.use('/api', router)
 
-app.listen(3000)
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(3005);
+httpsServer.listen(3000);
