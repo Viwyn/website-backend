@@ -11,7 +11,8 @@ dotenv.config()
 //cors permissions
 import cors from 'cors'
 const corsOptions ={
-    origin:'http://127.0.0.1:3001'
+    origin: ['http://127.0.0.1:3001', 'https://viwyn.com', 'https://www.viwyn.com'],
+    
 }
 app.use(cors(corsOptions))
 
