@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIP Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="icon" type="image/svg" href="./lib/logos/logo.svg">
+    <link rel="stylesheet", href="css/main.css">
+    <link rel="stylesheet", href="css/hero.css">
+    <link rel="stylesheet", href="css/about.css">
+    <link rel="stylesheet", href="css/contact.css">
+    <link rel="stylesheet", href="css/footer.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="nav-brand">
+                <svg class="nav-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="50" height="50" viewBox="0 0 128 128"><g transform="matrix(0.8046875,0,0,0.8046875,12.308860197179875,8.297454637096777)"><svg viewBox="0 0 143 155" data-background-color="#000000" preserveAspectRatio="xMidYMid meet" height="138" width="128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="tight-bounds" transform="matrix(1,0,0,1,0.2653688524590052,0.25)"><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g id="textblocktransform"><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196" id="textblock"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g transform="matrix(1,0,0,1,0,0)"><svg width="142.46926229508196" viewBox="1.1 -24.4 22.5 24.4" height="154.5" data-palette-color="url(#18ba5438-066c-49c7-bdd8-48cc04137ffb)"></svg></g></svg></g></svg></g></svg></g><g></g></svg></g><defs></defs><mask id="cea7927d-d01b-4a77-a7b0-bd4bf480370f"><g id="SvgjsG5502"><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g id="SvgjsG5501"><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196" id="SvgjsSvg5500"><g><svg viewBox="0 0 142.46926229508196 154.5" height="154.5" width="142.46926229508196"><g transform="matrix(1,0,0,1,0,0)"><svg width="142.46926229508196" viewBox="1.1 -24.4 22.5 24.4" height="154.5" data-palette-color="url(#18ba5438-066c-49c7-bdd8-48cc04137ffb)"><path d="M12.05-2.78L12.65-2.78 19.4-24.4 23.6-24.4 15.68 0 9.03 0 1.1-24.4 5.3-24.4 12.05-2.78Z" opacity="1" transform="matrix(1,0,0,1,0,0)" fill="white" class="wordmark-text-0" id="SvgjsPath5499"></path></svg></g></svg></g></svg></g></svg></g><g></g></svg></g><defs><mask></mask></defs></svg><rect width="142.46926229508196" height="154.5" fill="black" stroke="none" visibility="hidden"></rect></g></mask><linearGradient x1="0" x2="1" y1="0.548" y2="0.55" id="18ba5438-066c-49c7-bdd8-48cc04137ffb"><stop stop-color="#ff6cab" offset="0"></stop><stop stop-color="#7366ff" offset="1"></stop></linearGradient><rect width="142.46926229508196" height="154.5" fill="url(#18ba5438-066c-49c7-bdd8-48cc04137ffb)" mask="url(#cea7927d-d01b-4a77-a7b0-bd4bf480370f)" data-fill-palette-color="primary"></rect></svg><rect width="142.46926229508196" height="154.5" fill="none" stroke="none" visibility="hidden"></rect></g></svg></g></svg>
+                Viwyn&nbsp;<span class="brand-pf">| Portfolio</span>
+            </a>
+            <ul class="nav-sidebar">
+                <li onclick="hideSidebar()" class="svg-sidebar-close"><a href="#" class="sidebar-close"><svg class="svg-navbar-icon" xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+                <li><a href="#about" class="sidebar-item">About</a></li>
+                <li><a href="#blogs" class="sidebar-item">Blogs</a></li>
+                <li><a href="#projects" class="sidebar-item">Projects</a></li>
+                <li><a href="#contact" class="sidebar-item">Contact</a></li>
+            </ul>
+            <ul class="navbar">
+                <li><a href="#about" class="nav-item">About</a></li>
+                <li><a href="#blogs" class="nav-item">Blogs</a></li>
+                <li><a href="#projects" class="nav-item">Projects</a></li>
+                <li><a href="#contact" class="nav-item">Contact</a></li>
+                <li onclick="showSidebar()" class="svg-nav-menu"><a href="#"><svg class="svg-navbar-icon" xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- hero -->
+    <main class="wrapper hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-main-intro">
+                Hey! I'm <span class="intro-name">Viwyn</span>.
+            </div>
+            <div class="hero-sub-intro">
+                <div class="sub-intro-text">
+                    I am a <span class="obfuscated">student.</span>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <button type="button">Download CV</button>
+                <button onclick="location.href='#about'" type="button">About Me</button>
+            </div>
+            <div class="hero-socials">
+                <a href="https://www.linkedin.com/" class="hero-social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="hero-social-icon"><i class="fab fa-linkedin"></i></div>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/Viwyn" class="hero-social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="hero-social-icon"><i class="fab fa-github"></i></div>
+                    <span>GitHub</span>
+                </a>
+                <a href="#" class="hero-social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="hero-social-icon"><i class="fab fa-discord"></i></div>
+                    <span>Discord</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <section class="wrapper about" id="about">
+        <div class="about-content">
+            <div>
+                <h1>
+                    About Me
+                </h1>
+            </div>
+            <div>
+                <div class="pfp-wrapper" id="pfp">
+                    <img src="./lib/pfp.png" alt="pfp">
+                </div>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas exercitationem natus, facilis perferendis eos itaque harum repudiandae ab provident, earum ipsam cum. Voluptate molestias minima rem ullam tempore dolore exercitationem!
+                </p>
+            </div>
+        </div>
+        <div class="timeline" id="timeline">
+        </div>
+    </section>
+
+    <section class="wrapper blogs" id="blogs">
+        <div class="container">blogs</div>
+    </section>
+
+    <section class="wrapper projects" id="projects">
+        <div class="container">projects</div>
+    </section>
+
+    <section class="wrapper contact" id="contact">
+        <div class="contact-content">
+            <form class="contact-form-left" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="87552fe9-afda-46d6-99ac-53c71faa01a9">
+                <div class="contact-title-left">
+                    <h2>Get in touch~</h2>
+                </div>
+                <input type="text" name="name" placeholder="Your Name" class="contact-input" required>
+                <input type="email" name="email" placeholder="Your Email" class="contact-input" required>
+                <textarea name="contact-message" placeholder="Your Message" class="contact-input" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+            <div class="contact-form-right">
+                <img src="lib/placeholder.jpeg" alt="Email"/>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-copy">
+            &copy Viwyn 2024
+        </div>
+        <div class="footer-socials">
+            Follow me
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
