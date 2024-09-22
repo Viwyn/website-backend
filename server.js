@@ -11,7 +11,7 @@ import https from "https";
 
 //cors permissions
 import cors from 'cors'
-const corsOptions ={
+const corsOptions = {
     origin: ['http://127.0.0.1:3001', 'https://viwyn.com', 'https://www.viwyn.com'],
 
 }
@@ -23,10 +23,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke! Oh no...')
 })
 
-app.use(express.static('public')); // Serve static files from the 'public' folder
-
+app.use(express.static('public'));
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html'); // Serve the 'index.html' file
+    res.sendFile(__dirname + '/index.html');
 });
 
 import {default as apiRouter} from "./routes/api.js";
