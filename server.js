@@ -37,5 +37,5 @@ app.use('/login', loginRouter)
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(3005, 'localhost');
+httpServer.listen(3001, 'localhost');
 httpsServer.listen(3000, 'localhost');
