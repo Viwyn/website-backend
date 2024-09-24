@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 
 		const project_container = document.getElementById("project-list");
-		const projects_url = "http://localhost:3000/api/projects";
+		const projects_url = "https://viwyn.com/api/projects";
 
 		fetch(projects_url)
 			.then((response) => {
