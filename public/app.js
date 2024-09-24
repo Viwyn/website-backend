@@ -35,11 +35,11 @@ setTimeout(() => {
 	}, 50);
 }, delay * 1000);
 
-const experience_url = "https://viwyn.com:3000/api/experience";
+const experience_url = "https://viwyn.com/api/experience";
 
-//add experience on load based on sql server
+//add experience & projects on load
 document.addEventListener("DOMContentLoaded", function () {
-	const container = document.getElementById("timeline");
+	const experience_container = document.getElementById("timeline");
 	fetch(experience_url)
 		.then((response) => {
 			if (!response.ok) {
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
                 `;
-				container.innerHTML += html;
+				experience_container.innerHTML += html;
 			});
 
 			//add delay to each element added
@@ -88,6 +88,47 @@ document.addEventListener("DOMContentLoaded", function () {
 			for (let i = 0; i < parent.childElementCount; i++) {
 				const delay = i * 1;
 				children[i].style.animationDelay = `${delay}s`;
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+
+	const project_container = document.getElementById("project-list");
+	const projects_url = 'http://viwyn.com/api/projects'
+
+	fetch(projects_url)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then((jsonData) => {
+			for (var i = 0; i < jsonData.length; i++){
+				console.log(jsonData[i])
+				const html = `
+				<div class="project-container">
+                    <div class="project-title">${jsonData[i]['name']}</div>
+                    <div class="project-description">${jsonData[i]['description']}</div>
+                    <div class="project-languages">
+                        <div>languages</div>
+                        <div>languages</div>
+                    </div>
+                    <div class="project-stats">
+                        <div>${jsonData[i]['watchers_count']} watchers</div>
+                        <div>${jsonData[i]['forks_count']} forks</div>
+                        <div>${jsonData[i]['stargazers_count']} stars</div>
+                    </div>
+                    <div>
+                        <a class="project-button" href="${jsonData[i]['html_url']}" target="_blank" rel="noopener noreferrer">
+                            Code
+                        </a>
+                    </div>
+                </div>
+				`;
+
+				project_container.innerHTML += html
 			}
 		})
 		.catch((error) => {
@@ -119,3 +160,4 @@ function rotateElement(event, element) {
 	element.style.setProperty("--rotateX", -1 * offsetY + "deg");
 	element.style.setProperty("--rotateY", offsetX + "deg");
 }
+
