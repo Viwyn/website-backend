@@ -94,46 +94,64 @@ document.addEventListener("DOMContentLoaded", function () {
 			console.error(error);
 		});
 
-	const project_container = document.getElementById("project-list");
-	const projects_url = 'https://viwyn.com/api/projects'
+		const project_container = document.getElementById("project-list");
+		const projects_url = "http://localhost:3000/api/projects";
 
-	fetch(projects_url)
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`HTTP error: ${response.status}`);
-			}
-			return response.json();
-		})
-		.then((jsonData) => {
-			for (var i = 0; i < jsonData.length; i++){
-				console.log(jsonData[i])
-				const html = `
-				<div class="project-container">
-                    <div class="project-title">${jsonData[i]['name']}</div>
-                    <div class="project-description">${jsonData[i]['description']}</div>
-                    <div class="project-languages">
-                        <div>languages</div>
-                        <div>languages</div>
-                    </div>
-                    <div class="project-stats">
-                        <div>${jsonData[i]['watchers_count']} watchers</div>
-                        <div>${jsonData[i]['forks_count']} forks</div>
-                        <div>${jsonData[i]['stargazers_count']} stars</div>
-                    </div>
-                    <div>
-                        <a class="project-button" href="${jsonData[i]['html_url']}" target="_blank" rel="noopener noreferrer">
-                            Code
-                        </a>
-                    </div>
-                </div>
-				`;
+		fetch(projects_url)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error: ${response.status}`)
+				}
+				return response.json()
+			})
+			.then((project_data) => {
+				for (var i = 0; i < project_data.length; i++) {
+					(function (index) {
+						fetch(project_data[index]["languages_url"])
+							.then((response) => {
+								if (!response.ok) {
+									throw new Error(
+										`HTTP error: ${response.status}`
+									)
+								}
+								return response.json();
+							})
+							.then((languages_data) => {
+								var languages = Object.keys(languages_data)
+								var languages_html = ""
 
-				project_container.innerHTML += html
-			}
-		})
-		.catch((error) => {
-			console.error(error);
-		});
+								for (var lang of languages) {
+									languages_html += `<div>${lang}</div>`
+								}
+
+								const html = `
+									<div class="project-container">
+									<div class="project-title">${project_data[index]["name"]}</div>
+									<div class="project-description">${project_data[index]["description"]}</div>
+									<div class="project-languages">
+										${languages_html}
+									</div>
+									<div class="project-stats">
+										<div>${project_data[index]["watchers_count"]} watchers</div>
+										<div>${project_data[index]["forks_count"]} forks</div>
+										<div>${project_data[index]["stargazers_count"]} stars</div>
+									</div>
+									<div>
+										<a class="project-button" href="${project_data[index]["html_url"]}" target="_blank" rel="noopener noreferrer">
+										Code
+										</a>
+									</div>
+									</div>
+								`
+
+								project_container.innerHTML += html
+							})
+					})(i)
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 });
 
 //rotate pfp on hover
