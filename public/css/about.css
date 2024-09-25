@@ -28,7 +28,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    text-shadow: 3px 3px 10px var(--primary);
+    text-shadow: 5px 5px 5px var(--dark-accent);
     z-index: -1;
 }
 
@@ -103,13 +103,13 @@
     scale: 100%;
 }
 
-.about-content div p {
+.about-content div {
     text-align: justify;
     font-size: 20px;
     padding: 0 10px;
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 800px) {
     .about-content div{
         flex-direction: column;
         align-items: flex-start;
@@ -158,7 +158,6 @@
     border-radius: 50px;
     position: relative;
     width: 50%;
-    /* background: var(--dark-accent); */
     animation: timecard-appear 1s linear forwards;
     transform: translateY(-10px);
     opacity: 0;
@@ -244,4 +243,34 @@
     .timecard p {
         font-size: medium;
     }
+}
+
+.about-description {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.about-description h2, .about-description p {
+    width: 100%;
+}
+
+.about-description h2 {
+    font-size: xx-large;
+    font-family: "Merriweather";
+    text-align: left;
+    text-wrap: balance;
+    margin-bottom: 10px;
+}
+
+.about-description p {
+    font-size: medium;
+    text-align: left;
+    color: var(--light-accent);
+    margin-bottom: 5px;
+    text-wrap: balance;
+}
+
+.about-description h2 span {
+    color: var(--primary)
 }
