@@ -8,16 +8,7 @@ import {getImage} from "../src/aws.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import mysql from "mysql2"
-
-// mysql creds
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PWD,
-    database: process.env.MYSQL_DATABASE
-}).promise()
+import { connect, query } from '../database.js';
 
 
 async function getPfp(){
@@ -26,11 +17,16 @@ async function getPfp(){
 }
 
 async function getExperiences() {
-    const [experiences] = await pool.query(`
-    SELECT name, startDate, endDate, description, img FROM experience;
-        `)
+    try {
+        await connect()
 
-    return experiences
+        const rows = await query(`SELECT name, startDate, endDate, description, img FROM experience`)
+
+        return rows
+    } catch (err) {
+        console.error(err)
+        return { error: 'Error fetching experience' }
+    }
 }
 
 async function getProjects() {

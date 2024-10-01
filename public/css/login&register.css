@@ -45,8 +45,17 @@ body {
     position: relative;
 }
 
-.container h2::before {
+.login::before {
     content: "Login";
+    color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: blur(1px);
+    z-index: -1;
+}
+.register::before {
+    content: "Register";
     color: black;
     position: absolute;
     top: 0;
