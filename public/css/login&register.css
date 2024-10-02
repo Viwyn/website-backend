@@ -45,6 +45,13 @@ body {
     position: relative;
 }
 
+.container p {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 500;
+    color: red
+}
+
 .login::before {
     content: "Login";
     color: black;

@@ -6,24 +6,32 @@ import bcrypt from "bcrypt"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import mysql from "mysql2"
-
-// mysql creds
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PWD,
-    database: process.env.MYSQL_DATABASE
-}).promise()
+import connect from '../database.js';
 
 router.get('/', (req, res) => {
     res.status(200).render("login")
 })
 
 router.post('/', async (req, res) => {
-    const user = {username: req.body.username, password: req.body.password}
-    res.status(201).send("Logged in as " + user.username + " with password " + user.password)
+    const db = await connect()
+
+    let sql = `SELECT * FROM user WHERE username = ?;`
+
+    db.get(sql, [req.body.username], async (err, row) => {
+        if (err) {
+            console.error(err)
+            return res.status(500).send({error: "Something went wrong..."})
+        }
+        if (!row) {
+            return res.status(404).send({error: "User does not exist"})
+        }
+        
+        if (await bcrypt.compare(req.body.password, row.password)) {
+            res.status(201).send({success: "Logged in as " + row.username})
+        } else {
+            res.status(401).json({error: "Password is incorrect"})
+        }
+    })
 })
 
 export default router

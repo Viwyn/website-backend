@@ -9,20 +9,22 @@
 <body>
     <div class="container">
         <h2 class="login">Login</h2>
-        <form action="/login" method="POST">
+        <form>
             <div>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" value="<%=locals.username%>" required>
+                <p id="usernameErr"></p>
             </div>
             <div>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required minlength="8">
+                <p id="passwordErr"></p>
             </div>
             <div>
                 <button type="submit">Login</button>
             </div>
         </form>
-        <p>Not a user? <a href="/register">Register Here</a></p>
     </div>
 </body>
+<script src="/scripts/login.js"></script>
 </html>
