@@ -6,15 +6,13 @@ import bcrypt from "bcrypt"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import connect from '../database.js';
+import db from "./../database.js"
 
 router.get('/', (req, res) => {
     res.status(200).render("login")
 })
 
 router.post('/', async (req, res) => {
-    const db = await connect()
-
     let sql = `SELECT * FROM user WHERE username = ?;`
 
     db.get(sql, [req.body.username], async (err, row) => {

@@ -3,14 +3,14 @@ const router = express.Router()
 
 import bcrypt from "bcrypt"
 
-import connect from '../database.js';
+import db from "./../database.js"
 
 router.get('/', (req, res) => {
     res.status(200).render("register", {username: ""})
 })
 
 router.post('/', async (req, res) => {
-    const db = await connect()
+
     try{
         const hashedPwd = await bcrypt.hash(req.body.password, 10)
 

@@ -3,6 +3,8 @@ const app = express()
 import passport from "passport"
 import session from "express-session"
 
+import db from "./database.js"
+
 //set view engine
 app.set('view engine', 'ejs')
 
@@ -22,7 +24,10 @@ app.use(cors(corsOptions))
 app.use(session({
     secret: "abc", //change this later
     saveUninitialized: false,
-    resave: false
+    resave: false,
+    cookie: {
+        maxAge: 60000 * 60 //expires in 1 hour
+    }
 }))
 
 //error handler 

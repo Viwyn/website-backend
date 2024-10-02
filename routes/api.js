@@ -8,8 +8,7 @@ import {getImage} from "../src/aws.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import connect from '../database.js';
-
+import db from "./../database.js"
 
 async function getPfp(){
     const pfp_url = await getImage('pfp.png')
@@ -18,7 +17,6 @@ async function getPfp(){
 
 async function getExperiences() {
     try {
-        const db = await connect()
 
         const rows = await db.all(`SELECT name, startDate, endDate, description, img FROM experience`)
 
