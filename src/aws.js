@@ -1,29 +1,55 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import { Upload } from '@aws-sdk/lib-storage'
+import streamifier from 'streamifier'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-const createPresignedUrlWithClient = ({ region, bucket, key }) => {
-    const client = new S3Client({ region });
-    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-    return getSignedUrl(client, command, { expiresIn: 3600 });
+const REGION = process.env.AWS_REGION
+const BUCKET = process.env.AWS_BUCKET
+const ACCESS_KEY = process.env.AWS_ACCESS_KEY
+const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+
+const client = new S3Client({
+    region: REGION,
+    credentials: {
+        accessKeyId: ACCESS_KEY,
+        secretAccessKey: SECRET_ACCESS_KEY,
+    },
+})
+
+async function getUrl (key) {
+    const command = new GetObjectCommand({ Bucket: BUCKET, Key: key })
+    return getSignedUrl(client, command, { expiresIn: 60 })
 };
 
-export async function getImage(key) {
-    const REGION = process.env.AWS_REGION;
-    const BUCKET = process.env.AWS_BUCKET;
-    const KEY = key;
-
+export async function getImageUrl(key) {
     try {
-        const clientUrl = await createPresignedUrlWithClient({
-            region: REGION,
-            bucket: BUCKET,
-            key: KEY,
-        });
+        const imgUrl = await getUrl(key)
 
-        return (clientUrl)
+        return (imgUrl)
     } catch (err) {
         console.log(err)
+    }
+}
+
+export async function uploadFile(file) {
+    try {
+        const readStream = streamifier.createReadStream(file.buffer)
+        const upload = new Upload({
+			client: client,
+			params: {
+				Bucket: BUCKET,
+				Key: file.originalname,
+				Body: readStream,
+                ContentType: file.mimetype,
+                ContentDisposition: 'inline; filename="' + file.name + '"',
+			},
+		});
+        const result = await upload.done();
+    } catch (err) {
+        console.log(err)
+        throw err
     }
 }

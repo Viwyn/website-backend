@@ -3,24 +3,46 @@ const router = express.Router()
 
 import axios from "axios"
 
-import {getImage} from "../src/aws.js"
+import {getImageUrl, uploadFile} from "../src/aws.js"
 
 import dotenv from 'dotenv'
 dotenv.config()
 
 import db from "./../database.js"
 
-async function getPfp(){
-    const pfp_url = await getImage('pfp.png')
+import multer from 'multer'
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
+async function getImage(name){
+    const pfp_url = await getImageUrl(name)
     return pfp_url
 }
 
 async function getExperiences() {
     try {
+        
+        let results = new Promise ((resolve, reject) => {
+            db.all(`SELECT name, startDate, endDate, description, img FROM experience;`, [], (err, rows) => {
+                if (err) {
+                    reject(err)
+                }
+                if (!rows) {
+                    reject("No rows")
+                }
+                resolve(rows)
+            })
+        })
 
-        const rows = await db.all(`SELECT name, startDate, endDate, description, img FROM experience`)
+        return results
+        .then((rows) => {
+            return rows
+        })
+        .catch((err) => {
+            console.error(err)
+            ({error: 'Error fetching experience'})
+        })
 
-        return rows
     } catch (err) {
         console.error(err)
         return { error: 'Error fetching experience' }
@@ -48,18 +70,49 @@ async function getProjects() {
 }
 
 router.get('/pfp', async (req, res) => {
-    const pfp = await getPfp()
-    res.status(200).json(pfp)
+    const pfp = await getImage('pfp.png')
+    res.status(200).json({ "url" : pfp })
 })
 
 router.get('/experience', async (req, res) => {
-    const experiences = await getExperiences()
-    res.status(200).json(experiences)
+    try {
+		const experiences = await getExperiences();
+		res.status(200).json(experiences);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
 })
 
 router.get('/projects', async (req, res) => {
-    console.log("fetched github repos at " + new Date())
-    res.status(200).json(await getProjects())
+    try {
+        console.log("fetched github repos at " + new Date())
+        res.status(200).json(await getProjects())
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error"})
+    }
+})
+
+router.get('/resume', (req, res) => {
+    try {
+        res.download('./downloads/resume.pdf')
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error"})
+    }
+})
+
+router.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        await uploadFile(req.file)
+        .then (res.status(200).json({ status: "success" }))
+        
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ error: err})
+    }
+
 })
 
 export default router

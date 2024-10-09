@@ -35,7 +35,7 @@ setTimeout(() => {
 	}, 50);
 }, delay * 1000);
 
-const experience_url = "https://viwyn.com/api/experience";
+const experience_url = "/api/experience";
 
 //add experience & projects on load
 document.addEventListener("DOMContentLoaded", function () {
@@ -94,37 +94,37 @@ document.addEventListener("DOMContentLoaded", function () {
 			console.error(error);
 		});
 
-		const project_container = document.getElementById("project-list");
-		const projects_url = "https://viwyn.com/api/projects";
+	const project_container = document.getElementById("project-list");
+	const projects_url = "/api/projects";
 
-		fetch(projects_url)
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`HTTP error: ${response.status}`)
-				}
-				return response.json()
-			})
-			.then((project_data) => {
-				for (var i = 0; i < project_data.length; i++) {
-					(function (index) {
-						fetch(project_data[index]["languages_url"])
-							.then((response) => {
-								if (!response.ok) {
-									throw new Error(
-										`HTTP error: ${response.status}`
-									)
-								}
-								return response.json();
-							})
-							.then((languages_data) => {
-								var languages = Object.keys(languages_data)
-								var languages_html = ""
+	fetch(projects_url)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then((project_data) => {
+			for (var i = 0; i < project_data.length; i++) {
+				(function (index) {
+					fetch(project_data[index]["languages_url"])
+						.then((response) => {
+							if (!response.ok) {
+								throw new Error(
+									`HTTP error: ${response.status}`
+								);
+							}
+							return response.json();
+						})
+						.then((languages_data) => {
+							var languages = Object.keys(languages_data);
+							var languages_html = "";
 
-								for (var lang of languages) {
-									languages_html += `<div>${lang}</div>`
-								}
+							for (var lang of languages) {
+								languages_html += `<div>${lang}</div>`;
+							}
 
-								const html = `
+							const html = `
 									<div class="project-container">
 									<div class="project-title">${project_data[index]["name"]}</div>
 									<div class="project-description">${project_data[index]["description"]}</div>
@@ -142,24 +142,32 @@ document.addEventListener("DOMContentLoaded", function () {
 										</a>
 									</div>
 									</div>
-								`
+								`;
 
-								project_container.innerHTML += html
-							})
-					})(i)
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+							project_container.innerHTML += html;
+						});
+				})(i);
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+
+	fetch("/api/pfp")
+		.then((response) => response.json())
+		.then((data) => {
+			const imageUrl = data.url; // assuming the API returns an object with an imageUrl property
+			document.getElementById("pfp-img").src = imageUrl;
+		})
+		.catch((error) => console.error(error));
 });
 
 //rotate pfp on hover
-const pfp = document.getElementById("pfp")
+const pfp = document.getElementById("pfp");
 
 document.addEventListener("mousemove", (e) => {
 	rotateElement(e, pfp);
-})
+});
 
 function rotateElement(event, element) {
 	//get mouse pos
@@ -178,4 +186,3 @@ function rotateElement(event, element) {
 	element.style.setProperty("--rotateX", -1 * offsetY + "deg");
 	element.style.setProperty("--rotateY", offsetX + "deg");
 }
-

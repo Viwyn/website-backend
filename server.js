@@ -50,6 +50,9 @@ app.use('/login', loginRouter)
 import {default as registerRouter} from "./routes/register.js"
 app.use('/register', registerRouter)
 
+import {default as blogsRouter} from "./routes/blogs.js"
+app.use('/blogs', blogsRouter)
+
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
