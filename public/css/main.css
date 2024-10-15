@@ -169,12 +169,16 @@ nav {
     .svg-nav-menu {
         display: block;
     }
+
+    div#page-header-wrap{display:none;}
 }
 
 @media only screen and (max-width: 400px){ 
     .nav-sidebar {
         width: 100%;
     }
+
+    div#page-header-wrap{display:none;}
 }
 
 /* --sections -- */

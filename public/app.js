@@ -14,7 +14,7 @@ function hideSidebar() {
 const obfuscatedElement = document.querySelector(".obfuscated");
 
 function getRandomChar() {
-	const chars = "ⅳ℅℃ℶⅉⅮ⅔℔ↁ⅓⅖⅑⅍ⅽ℆ⅵⅴÅ";
+	const chars = "!@#$%^&*(){}:>?<_+-=";
 	return chars[Math.floor(Math.random() * chars.length)];
 }
 
