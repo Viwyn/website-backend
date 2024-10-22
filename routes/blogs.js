@@ -25,7 +25,6 @@ router.get('/post/create', (req, res) => {
 })
 
 router.post('/post/create', upload.array('images', 10), async (req, res) => {
-
     const {title, content} = req.body
     const images = req.files
 
@@ -43,23 +42,24 @@ router.post('/post/create', upload.array('images', 10), async (req, res) => {
         })
     })
 
-    console.log(lastId)
-
     if (images.length > 0) {
-        try {
-            await uploadFile(req.files[0], 'posts/')
-            
-        } catch (err) {
-            console.error(err)
-            return res.status(500).json({ error: "Internal Server Error" })
-        }
+        images.forEach(async (image) => {
+            try {
+                await uploadFile(image, 'posts/' + lastId + '/')
+                
+            } catch (err) {
+                console.error(err)
+                return res.status(500).json({ error: "Internal Server Error" })
+            }
+        })
     }
 
-    res.status(201).send({"status" : "success"})
+    res.status(201).redirect('/blogs/post/' + lastId)
 })
 
 router.get('/post/:id', async (req, res) => {
-    res.status(200).send(`Loading blog id ${req.params.id}`)
+
+    res.status(200).json({ status: `Loading blog id ${req.params.id}` })
 })
 
 export default router
