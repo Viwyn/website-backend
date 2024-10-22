@@ -6,30 +6,41 @@ import bcrypt from "bcrypt"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import db from "./../database.js"
+import db from "../src/database.js"
+
+import passport from "passport"
 
 router.get('/', (req, res) => {
     res.status(200).render("login")
 })
 
-router.post('/', async (req, res) => {
-    let sql = `SELECT * FROM user WHERE username = ?;`
+router.post('/', async (req, res, next) => {
+    const returnTo = req.session.returnTo ? req.session.returnTo : '/blogs'
+    delete req.session.returnTo
 
-    db.get(sql, [req.body.username], async (err, row) => {
+    passport.authenticate("local", async (err, user, info) => {
         if (err) {
-            console.error(err)
-            return res.status(500).send({error: "Something went wrong..."})
+            console.error("Authentication error:", err)
+            return res.status(500).send({ error: "Something went wrong..." })
         }
-        if (!row) {
-            return res.status(404).send({error: "User does not exist"})
+        if (!user) {
+            return res.status(401).json({ error: info.message || "Unauthorized" })
         }
-        
-        if (await bcrypt.compare(req.body.password, row.password)) {
-            res.status(201).send({success: "Logged in as " + row.username})
-        } else {
-            res.status(401).json({error: "Password is incorrect"})
-        }
-    })
+
+        req.logIn(user, async (err) => {
+            if (err) {
+                console.error("Login error:", err)
+                return res.status(500).send({ error: "Something went wrong during login" })
+            }
+
+            req.session.user = user
+            res.status(201).send({ success: "Logged in successfully", returnTo})
+        })
+    })(req, res, next)
+})
+
+router.get('/auth/status', (req, res) => {
+    return req.user ? res.status(200).send(req.user) : res.status(401).send({ error: "Bad credentials" })
 })
 
 export default router

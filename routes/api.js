@@ -8,7 +8,7 @@ import {getImageUrl, uploadFile} from "../src/aws.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
-import db from "./../database.js"
+import db from "../src/database.js"
 
 import multer from 'multer'
 const storage = multer.memoryStorage()
@@ -21,8 +21,7 @@ async function getImage(name){
 
 async function getExperiences() {
     try {
-        
-        let results = new Promise ((resolve, reject) => {
+        let results = await new Promise ((resolve, reject) => {
             db.all(`SELECT name, startDate, endDate, description, img FROM experience;`, [], (err, rows) => {
                 if (err) {
                     reject(err)
@@ -35,13 +34,32 @@ async function getExperiences() {
         })
 
         return results
-        .then((rows) => {
-            return rows
+
+    } catch (err) {
+        console.error(err)
+        return { error: 'Error fetching experience' }
+    }
+}
+
+async function getBlogs() {
+    try {
+        const sql = `SELECT b.id, b.title, b.content, b.author, u.pfp, b.created_at, b.updated_at FROM blogs b 
+        INNER JOIN users u 
+        ON u.username = b.author;`
+
+        let results = await new Promise ((resolve, reject) => {
+            db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err)
+                }
+                if (!rows) {
+                    reject("No rows")
+                }
+                resolve(rows)
+            })
         })
-        .catch((err) => {
-            console.error(err)
-            ({error: 'Error fetching experience'})
-        })
+
+        return results
 
     } catch (err) {
         console.error(err)
@@ -90,7 +108,7 @@ router.get('/projects', async (req, res) => {
         res.status(200).json(await getProjects())
     } catch (err) {
         console.error(err)
-        res.status(500).json({ error: "Internal Server Error"})
+        res.status(500).json({ error: "Internal Server Error" })
     }
 })
 
@@ -99,8 +117,18 @@ router.get('/resume', (req, res) => {
         res.download('./downloads/resume.pdf')
     } catch (err) {
         console.error(err)
-        res.status(500).json({ error: "Internal Server Error"})
+        res.status(500).json({ error: "Internal Server Error" })
     }
+})
+
+router.get('/blogs', async (req, res) => {
+    try {
+		const blogs = await getBlogs();
+		res.status(200).json(blogs);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
 })
 
 router.post('/upload', upload.single('file'), async (req, res) => {
@@ -110,7 +138,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         
     } catch (err) {
         console.error(err)
-        return res.status(500).json({ error: err})
+        return res.status(500).json({ error: "Internal Server Error" })
     }
 
 })

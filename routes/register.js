@@ -3,7 +3,7 @@ const router = express.Router()
 
 import bcrypt from "bcrypt"
 
-import db from "./../database.js"
+import db from "../src/database.js"
 
 router.get('/', (req, res) => {
     res.status(200).render("register", {username: ""})
@@ -16,9 +16,9 @@ router.post('/', async (req, res) => {
 
         const user = {username: req.body.username, password: hashedPwd}
 
-        const sql = `INSERT INTO user (username, password) VALUES (?, ?);`
+        const sql = `INSERT INTO users (username, password) VALUES (?, ?);`
         
-        await db.run(sql, [user.username, user.password])
+        db.run(sql, [user.username, user.password])
 
         res.status(201).redirect('/login')
 

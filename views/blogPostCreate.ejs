@@ -20,44 +20,24 @@
         </nav>
     </header>
     <main>
-        <div class="blogs" id="blogs">
-            <a class="blog-card">
-                <h2 class="blog-title">
-                    Lorem Ipsum
-                </h2>
-                <div>
-                    
-                </div>
-                <img class="blog-thumbnail" src="/lib/placeholder-hori.jpeg" alt="placeholder" loading="lazy">
-                <p class="blog-description">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt rem tenetur cupiditate. Sed facere aut veritatis temporibus natus nam commodi praesentium animi eveniet assumenda, pariatur in officiis delectus saepe quia.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. A quas tenetur error debitis provident quaerat sapiente temporibus, ipsam aliquid ipsa praesentium soluta quasi porro numquam assumenda fugiat ad excepturi obcaecati.
-                </p>
-                <div class="blog-author">
-                    <img src="/lib/placeholder.jpeg" alt="pfp">
-                    <p>Author Name</p>
-                </div>
-            <a>
-            <a class="blog-card">
-                <h2 class="blog-title">
-                    Lorem Ipsum
-                </h2>
-                <div>
-                    
-                </div>
-                <img class="blog-thumbnail" src="/lib/placeholder.jpeg" alt="placeholder" loading="lazy">
-                <p class="blog-description">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt rem tenetur cupiditate. Sed facere aut veritatis temporibus natus nam commodi praesentium animi eveniet assumenda, pariatur in officiis delectus saepe quia.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. A quas tenetur error debitis provident quaerat sapiente temporibus, ipsam aliquid ipsa praesentium soluta quasi porro numquam assumenda fugiat ad excepturi obcaecati.
-                </p>
-                <div class="blog-author">
-                    <img src="/lib/placeholder.jpeg" alt="pfp">
-                    <p>Author Name</p>
-                </div>
-            </a>
-        </div>
+        <form id="postForm">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" maxlength="250" required>
+            </div>
+            <div>
+                <label for="content">Content</label>
+                <textarea id="content" name="content" rows="10" required></textarea>
+            </div>
+            <div>
+                <label for="images">Upload Images</label>
+                <input type="file" id="images" name="images" accept="image/*" multiple>
+            </div>
+            <div>
+                <button type="submit">Create Post</button>
+            </div>
+        </form>
     </main>
-
 </body>
-<script src="/scripts/blogs.js"></script>
+<script src="/scripts/blogPostCreate.js"></script>
 </html>

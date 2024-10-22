@@ -34,14 +34,14 @@ export async function getImageUrl(key) {
     }
 }
 
-export async function uploadFile(file) {
+export async function uploadFile(file, path = null) {
     try {
         const readStream = streamifier.createReadStream(file.buffer)
         const upload = new Upload({
 			client: client,
 			params: {
 				Bucket: BUCKET,
-				Key: file.originalname,
+				Key: path ? path + file.originalname : file.originalname,
 				Body: readStream,
                 ContentType: file.mimetype,
                 ContentDisposition: 'inline; filename="' + file.name + '"',

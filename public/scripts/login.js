@@ -10,7 +10,6 @@ form.addEventListener("submit", async (e) => {
 				password: document.getElementById("password").value,
 			}),
 		})
-		const data = await response.json();
 		const passwordErr = document.getElementById("passwordErr")
 		const usernameErr = document.getElementById("usernameErr")
 		const password_field = document.getElementById("password")
@@ -20,11 +19,13 @@ form.addEventListener("submit", async (e) => {
         password_field.value = ""
 
 		if (response.status == 201) {
-			console.log("ok");
+			console.log("ok")
+			const data = await response.json()
+			window.location.href = data.returnTo
 		} else if (response.status == 401) {
-			passwordErr.textContent = data.error
+			passwordErr.textContent = "Invalid Password"
 		} else if (response.status == 404) {
-            usernameErr.textContent = data.error
+            usernameErr.textContent = "User Not Found"
         }
 	} catch (error) {
 		console.error(error)

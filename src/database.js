@@ -5,7 +5,7 @@ const db = new sqlite3.Database("./db.sqlite", (err) => {
 			console.error(err.message)
 			throw err
 		} else {
-			console.log("Connected to database at " + new Date())
+			console.log("Connected to database on " + new Date())
 		}
 	})
 
