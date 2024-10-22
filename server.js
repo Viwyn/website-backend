@@ -24,14 +24,12 @@ app.use(cors(corsOptions))
 
 //sessions
 app.use(session({
-    secret: process.env.SESSION_SECRET, //change this later
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: {
         maxAge: 60000 * 60, //expires in 1 hour
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax'
+        httpOnly: true
     }
 }))
 
