@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </a>
                 `
 
-        console.log(cardHtml)
         blogContainer.innerHTML += cardHtml
     })
 })
