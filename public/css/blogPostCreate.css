@@ -1,0 +1,256 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+h1 {
+    width: 100%;
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 50px;
+    margin: 20px 0;
+}
+
+#postForm {
+    width: clamp(200px, 80%, 800px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.titleLabel {
+    display: block;
+    position: relative;
+}
+
+.titleLabel textarea {
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
+    width: 100%;
+    outline: none;
+    font-size: 20px;
+    margin: 10px 0;
+    resize: none;
+    overflow:-moz-hidden-unscrollable;
+    height: auto;
+    overflow: hidden;
+    transition: border 100ms ease;
+    background: var(--primary-light)
+}
+
+.titlePlaceholder {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    font-size: 20px;
+    color: var(--mid-shade);
+    transition: all 250ms ease;
+}
+
+.titleLabel textarea:hover {
+    border: 3px solid var(--dark-accent);
+}
+
+.titleLabel textarea:focus {
+    border: 3px solid var(--dark-accent);
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+
+.titleLabel textarea:valid{
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+
+.titleLabel textarea:focus + .titlePlaceholder, 
+.titleLabel textarea:valid + .titlePlaceholder{
+    top: 15px;
+    font-size: 15px;
+    color: var(--dark-shade)
+}
+
+#image-drop {
+    width: 100%;
+    height: 200px;
+    background: var(--primary-light);
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 3px dashed var(--dark-accent);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#img-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: scale 250ms ease;
+}
+
+#img-view p {
+    font-size: 20px;
+}
+
+.img-upload-btn-logo {
+    fill: var(--rose);
+}
+
+#image-drop:hover #img-view{
+    scale: 105%;
+}
+
+#image-drop:hover + .img-upload-btn-logo {
+    fill: var(--dark-shade);
+}
+
+#image-carousel {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    max-height: 300px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.carousel-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    transition: transform 350ms ease;
+}
+
+.carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.carousel-button svg{
+    fill: var(--dark-shade);
+    width: 30px;
+    height: 30px;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    transition: scale 150ms ease;
+    z-index: 2;
+}
+
+.carousel-button:hover {
+    scale: 105%;
+}
+
+.carousel-button:active {
+    scale: 100%;
+}
+
+.carousel-button--left {
+    left: 10px;
+    visibility: hidden;
+}
+
+.carousel-button--right {
+    right: 10px;
+}
+
+.carousel-nav {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50px;
+    padding: 5px;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.carousel-indicator {
+    border: 0;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background: #444444;
+    margin: 0 5px;
+    transition: background 250ms ease;
+}
+
+.carousel-indicator.current-slide {
+    background: #ccc;
+}
+
+.carousel-container:hover ~ .carousel-nav, 
+.carousel-button:hover ~ .carousel-nav ,
+.carousel-nav:hover {
+    opacity: 1;
+}
+
+.image-preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.imgPreviewFg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.imgPreviewBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    filter: brightness(0.9) blur(10px);
+    object-fit: cover;
+}
+

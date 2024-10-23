@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogs | Viwyn</title>
-    <link href="/css/blogs.css" rel="stylesheet">
+    <link href="/css/blogs.css" rel="stylesheet"> 
     <link href="/css/blogPostCreate.css" rel="stylesheet">
 </head>
 <body>
@@ -21,18 +21,68 @@
         </nav>
     </header>
     <main>
+        <h1>
+            Create Post
+        </h1>
         <form id="postForm">
             <div>
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" maxlength="250" required>
+                <label for="title" class="titleLabel">
+                    <textarea class="title" id="title" name="title" maxlength="250" required rows="1"></textarea>
+                    <span class="titlePlaceholder">Title</span>
+                </label>
+            </div>
+            <div>
+                <label for="images" id="image-drop">
+                    <input type="file" id="images" name="images" accept="image/*" multiple hidden>
+                    <div id="img-view">
+                        <p>
+                            Drag and drop or upload media
+                        </p>
+                        <svg class="img-upload-btn-logo" xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                    </div>
+                </label>
+            </div>
+            <div id="image-carousel">
+                <button class="carousel-button carousel-button--left">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+                </button>
+
+                <div class="carousel-container">
+                    <ul class="carousel-track">
+                        <li class="carousel-slide current-slide">
+                            <div class="image-preview">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewFg">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewBg">
+                            </div>
+                        </li>
+                        <li class="carousel-slide">
+                            <div class="image-preview">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewFg">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewBg">
+                            </div>
+                        </li>
+                        <li class="carousel-slide">
+                            <div class="image-preview">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewFg">
+                                <img src="/lib/placeholder.jpeg" alt="placeholder" class="imgPreviewBg">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="carousel-button carousel-button--right">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
+                </button>
+
+                <div class="carousel-nav">
+                    <button class="carousel-indicator current-slide"></button>
+                    <button class="carousel-indicator"></button>
+                    <button class="carousel-indicator"></button>
+                </div>
             </div>
             <div>
                 <label for="content">Content</label>
                 <textarea id="content" name="content" rows="10" required></textarea>
-            </div>
-            <div>
-                <label for="images">Upload Images</label>
-                <input type="file" id="images" name="images" accept="image/*" multiple>
             </div>
             <div>
                 <button type="submit">Create Post</button>

@@ -89,7 +89,7 @@
 }
 
 .contact-form-right img {
-    height:clamp(20px, 20vw, 350px);
+    height: clamp(20px, 20vw, 350px);
 }
 
 @media only screen and (max-width: 650px) {

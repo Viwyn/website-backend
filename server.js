@@ -27,9 +27,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
+    // proxy: true,
     cookie: {
         maxAge: 60000 * 60, //expires in 1 hour
-        httpOnly: true
+        httpOnly: true,
+        // secure: true
     }
 }))
 
