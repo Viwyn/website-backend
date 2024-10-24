@@ -124,8 +124,9 @@ h1 {
 #image-carousel {
     position: relative;
     width: 100%;
-    height: 300px;
-    max-height: 300px;
+    height: 500px;
+    max-height: 500px;
+    display: none;
 }
 
 .carousel-container {
@@ -153,10 +154,10 @@ h1 {
     top: 0;
     bottom: 0;
     overflow: hidden;
+    user-select: none;
 }
 
 .carousel-button svg{
-    fill: var(--dark-shade);
     width: 30px;
     height: 30px;
 }
@@ -165,7 +166,7 @@ h1 {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.2);
     border: none;
     border-radius: 50%;
     padding: 5px;
@@ -188,6 +189,17 @@ h1 {
 }
 
 .carousel-button--right {
+    right: 10px;
+    visibility: hidden;
+}
+
+.carousel-button--add {
+    top: 30px;
+    left: 10px;
+}
+
+.carousel-button--delete {
+    top: 30px;
     right: 10px;
 }
 
@@ -232,10 +244,11 @@ h1 {
     justify-content: center;
     width: 100%;
     height: 100%;
-    max-height: 400px;
+    max-height: 100%;
     overflow: hidden;
     border-radius: 20px;
 }
+
 
 .imgPreviewFg {
     max-width: 100%;

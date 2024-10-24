@@ -61,27 +61,103 @@ document.addEventListener("DOMContentLoaded", function () {
 	inputResize(textarea)
 })
 
-// image preview
+// everything image
+const carousel = document.querySelector('#image-carousel')
+const imageDrop = document.getElementById('image-drop')
+const fileInput = document.getElementById('images')
 const track = document.querySelector('.carousel-track')
-const slides = Array.from(track.children)
+let slides = Array.from(track.children)
+
 const nextBtn = document.querySelector('.carousel-button--right')
 const prevBtn = document.querySelector('.carousel-button--left')
-const dotNav = document.querySelector('.carousel-nav')
-const dots = Array.from(dotNav.children)
+const addImgBtn = document.querySelector('.carousel-button--add')
+const delBtn = document.querySelector('.carousel-button--delete')
 
-const slideWidth = slides[0].getBoundingClientRect().width
+const dotNav = document.querySelector('.carousel-nav')
+let dots = Array.from(dotNav.children)
+
+let slideWidth = slides.length > 0 ? slides[0].getBoundingClientRect().width : 0
 
 // position the images
-slides.forEach((slide, index) => {
-	slide.style.left = `${slideWidth * index}px`
-});
+function positionSlides() {
+	slides.forEach((slide, index) => {
+		slide.style.left = `${slideWidth * index}px`
+	})
+}
 
+//updates the slides array
+function updateSlides() {
+	slides = Array.from(track.children)
+	dots = Array.from(dotNav.children)
+	slideWidth = slides.length > 0 ? slides[0].getBoundingClientRect().width : 0
+
+	slides.length > 0 ? imageDrop.style.display = 'none' : imageDrop.style.display = 'flex'
+
+	if (slides.length > 1) {
+		nextBtn.style.visibility = 'visible'
+	} else {
+		nextBtn.style.visibility = 'hidden'
+		prevBtn.style.visibility = 'hidden'
+	}
+
+	if (slides.length === 0) {
+		imageDrop.style.display = 'flex'
+		carousel.style.display = 'none'
+		track.style.transform = `translateX(0)`;
+	}
+}
+
+positionSlides()
+
+//image drag n drop
+function addImg() {
+	carousel.style.display = 'flex'
+	const fileArray = Array.from(fileInput.files)
+	fileArray.forEach(img => {
+		//check if images are at max (10)
+		if (slides.length >= 10) {
+			addImgBtn.style.visibility = 'hidden'
+			return
+		}
+
+		const fileUrl = URL.createObjectURL(img)
+
+		const newSlide = `<li class="carousel-slide${slides.length === 0 ? " current-slide" : ""}">
+                            <div class="image-preview">
+                                <img src="${fileUrl}" alt="imageForeground" class="imgPreviewFg">
+                                <img src="${fileUrl}" alt="imageBackground" class="imgPreviewBg" undragable>
+                            </div>
+                        </li>`
+
+		const newDot = `<button class="carousel-indicator${dots.length === 0 ? " current-slide" : ""}"></button>`
+
+		track.insertAdjacentHTML('beforeend', newSlide)
+		dotNav.insertAdjacentHTML('beforeend', newDot)
+		updateSlides()
+		positionSlides()
+	})
+	fileInput.value = ""
+}
+
+fileInput.addEventListener("change", addImg)
+
+imageDrop.addEventListener("dragover", e => {
+	e.preventDefault()
+})
+
+imageDrop.addEventListener("drop", e => {
+	e.preventDefault()
+	fileInput.files = e.dataTransfer.files
+})
+
+// image preview
 function moveToSlide (track, currentSlide, targetSlide) {
+	if (!targetSlide) return
 	// move to next slide
 	track.style.transform = `translateX(-${targetSlide.style.left})`;
 
 	// move current-slide class
-	currentSlide.classList.remove("current-slide");
+	if (currentSlide) currentSlide.classList.remove("current-slide");
 	targetSlide.classList.add("current-slide");
 
 }
@@ -94,7 +170,7 @@ nextBtn.addEventListener("click", e => {
 	const nextSlide = currentSlide.nextElementSibling
 	const nextIndex = slides.indexOf(nextSlide)
 	const currentDot = dotNav.querySelector('.current-slide')
-	const nextDot = dots[slides.indexOf(nextSlide)]
+	const nextDot = dots[nextIndex]
 
 	if (nextSlide) {
 		moveToSlide(track, currentSlide, nextSlide)
@@ -115,7 +191,7 @@ prevBtn.addEventListener("click", e => {
 	const nextSlide = currentSlide.previousElementSibling
 	const nextIndex = slides.indexOf(nextSlide)
 	const currentDot = dotNav.querySelector('.current-slide')
-	const nextDot = dots[slides.indexOf(nextSlide)]
+	const nextDot = dots[nextIndex]
 
 	if (nextSlide) {
 		moveToSlide(track, currentSlide, nextSlide)
@@ -126,4 +202,44 @@ prevBtn.addEventListener("click", e => {
 	if (nextIndex == 0) {
 		prevBtn.style.visibility = 'hidden'
 	}
+})
+// add button
+addImgBtn.addEventListener("click", e => {
+	e.preventDefault()
+
+	fileInput.click()
+})
+// delete button
+delBtn.addEventListener("click", e => {
+	e.preventDefault()
+
+	addImgBtn.style.visibility = 'visible'
+
+	const currentSlide = track.querySelector('.current-slide')
+	let nextSlide = currentSlide.previousElementSibling || currentSlide.nextElementSibling || null
+	const nextIndex = slides.indexOf(nextSlide)
+	const currentDot = dotNav.querySelector('.current-slide')
+	const nextDot = dots[nextIndex]
+	
+	currentSlide.remove()
+	currentDot.remove()
+	positionSlides()
+	moveToSlide(track, currentSlide, nextSlide)
+	updateSlides()
+
+	if (nextIndex === 0) {
+		prevBtn.style.visibility = 'hidden'
+	}
+	if (nextIndex === slides.length - 1) {
+		nextBtn.style.visibility = 'hidden'
+	}
+
+	if (nextSlide) {
+		nextSlide.classList.add("current-slide")
+	}
+
+	if (nextDot) {
+		nextDot.classList.add("current-slide")
+	}
+
 })
