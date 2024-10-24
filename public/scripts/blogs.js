@@ -13,10 +13,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div>
                         
                     </div>
-                    <img class="blog-thumbnail" src="/lib/placeholder-hori.jpeg" alt="placeholder" loading="lazy">
-                    <p class="blog-description">
-                        ${blog.content}
-                    </p>
+                    ${blog.images ? 
+                    `<div class="blog-thumbnail">
+                        <div class="image-preview">
+                            <img src="${blog.images[0].url}" alt="imageForeground" class="imgPreviewFg">
+                            <img src="${blog.images[0].url}" alt="imageBackground" class="imgPreviewBg" undragable>
+                        </div>
+                    </div>` 
+                    : ""}
+                    <div class="blog-description" id="blog-description-${blog.id}"></div>
                     <div class="blog-author">
                         <img src="${blog.pfp ? blog.pfp : '/lib/placeholder.jpeg'}" alt="pfp">
                         <p>${blog.author}</p>
@@ -25,5 +30,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `
 
         blogContainer.innerHTML += cardHtml
+        
+        const blogDescriptionContainer = document.getElementById(`blog-description-${blog.id}`)
+        const quill = new Quill(blogDescriptionContainer, {
+            theme: 'snow',
+            modules: {
+                toolbar: false 
+            },
+            readOnly: true 
+        })
+
+        const editorContent = JSON.parse(blog.content)
+        quill.setContents(editorContent)
     })
 })

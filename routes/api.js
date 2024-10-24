@@ -3,7 +3,7 @@ const router = express.Router()
 
 import axios from "axios"
 
-import {getImageUrl, uploadFile} from "../src/aws.js"
+import {getImageUrl, uploadFile, getAllImageUrls} from "../src/aws.js"
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -58,8 +58,18 @@ async function getBlogs() {
                 resolve(rows)
             })
         })
+        
+        const finalResult = await Promise.all(results.map(async (element) => {
+            const images = await getAllImageUrls(element.id)
+            if (images) {
+                return { ...element, images}
+            } else {
+                return element
+            }
+        }))
+        
 
-        return results
+        return finalResult
 
     } catch (err) {
         console.error(err)
@@ -140,7 +150,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         console.error(err)
         return res.status(500).json({ error: "Internal Server Error" })
     }
-
 })
 
 export default router

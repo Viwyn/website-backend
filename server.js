@@ -55,8 +55,8 @@ app.use('/api', apiRouter)
 import {default as loginRouter} from "./routes/login.js"
 app.use('/login', loginRouter)
 
-// import {default as registerRouter} from "./routes/register.js"
-// app.use('/register', registerRouter)
+import {default as registerRouter} from "./routes/register.js"
+app.use('/register', registerRouter)
 
 import {default as blogsRouter} from "./routes/blogs.js"
 app.use('/blogs', blogsRouter)

@@ -37,7 +37,7 @@ h1 {
 .titleLabel textarea {
     box-sizing: border-box;
     border: 3px solid transparent;
-    padding: 1rem 1.5rem;
+    padding: 1.1rem 1.5rem;
     border-radius: 20px;
     width: 100%;
     outline: none;
@@ -67,12 +67,12 @@ h1 {
 .titleLabel textarea:focus {
     border: 3px solid var(--dark-accent);
     padding-top: 25px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .titleLabel textarea:valid{
     padding-top: 25px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .titleLabel textarea:focus + .titlePlaceholder, 
@@ -263,7 +263,43 @@ h1 {
     left: 0;
     top: 0;
     z-index: -1;
-    filter: brightness(0.9) blur(10px);
+    filter: brightness(0.9) blur(20px);
     object-fit: cover;
 }
 
+.bodyText {
+    border: 3px solid var(--dark-accent);
+    border-radius: 20px;
+    background: var(--primary-light)
+}
+
+#content {
+    height: 300px;
+    border: none;
+    font-size: 20px;
+    /* padding-bottom: 5px; */
+}
+
+.ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 3px solid var(--dark-accent)
+}
+
+.formBtn {
+    font-size: 20px;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: 3px solid var(--dark-accent);
+    background: var(--primary-light);
+    float: right;
+    transition: scale 250ms ease;
+    cursor: pointer;
+}
+
+.formBtn:hover {
+    scale: 105%;
+}
+
+.formBtn:active {
+    scale: 100%;
+}

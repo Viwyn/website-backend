@@ -1,64 +1,31 @@
-// upload post
-
-document
-.getElementById("postForm")
-	.addEventListener("submit", async function (event) {
-		event.preventDefault()
-
-		const formData = new FormData()
-
-		const title = document.getElementById("title").value
-		const content = document.getElementById("content").value
-		const images = document.getElementById("images").files
-
-		// Append the text data to the FormData object
-		formData.append("title", title)
-		formData.append("content", content)
-
-		for (let i = 0; i < images.length; i++) {
-			formData.append("images", images[i])
-		}
-
-		try {
-			const response = await fetch("/blogs/post/create", {
-				method: "POST",
-				body: formData,
-			})
-
-			if (response.ok) {
-				const result = await response.json()
-				console.log("Post created:", result)
-				alert("Post created successfully!")
-
-				// Optionally, you can redirect or update the page here
-			} else {
-				console.error("Error creating post:", response.statusText);
-				alert("Failed to create post.")
-			}
-		} catch (error) {
-			console.error("Network error:", error);
-			alert("An error occurred. Please try again.")
-		}
-	})
-
 // title resize
-
 document.addEventListener("DOMContentLoaded", function () {
-	const textarea = document.getElementById("title")
-
-	function inputResize(element) {
+	const titleTextArea = document.getElementById("title")
+	const contentTextArea = document.getElementById("content")
+	
+	function inputResize(element, preferred = null) {
 		element.style.height = "auto"
-		element.style.height = element.scrollHeight + "px"
+		
+		if (!preferred) {
+			element.style.height = element.scrollHeight + "px"
+		} else {
+			element.style.height = Math.max(element.scrollHeight, preferred) + "px"
+		}
 	}
 
-	textarea.addEventListener("input", () => {
-		inputResize(textarea)
+	titleTextArea.addEventListener("input", () => {
+		inputResize(titleTextArea)
 	}) 
+	quill.on('text-change', () => {
+		inputResize(contentTextArea, 300)
+	})
 	window.addEventListener("resize", () => {
-		inputResize(textarea)
+		inputResize(titleTextArea)
+		inputResize(contentTextArea, 300)
 	})
 
-	inputResize(textarea)
+	inputResize(titleTextArea)
+	inputResize(contentTextArea, 300)
 })
 
 // everything image
@@ -77,6 +44,8 @@ const dotNav = document.querySelector('.carousel-nav')
 let dots = Array.from(dotNav.children)
 
 let slideWidth = slides.length > 0 ? slides[0].getBoundingClientRect().width : 0
+
+let imageArray = []
 
 // position the images
 function positionSlides() {
@@ -114,12 +83,15 @@ function addImg() {
 	carousel.style.display = 'flex'
 	const fileArray = Array.from(fileInput.files)
 	fileArray.forEach(img => {
-		//check if images are at max (10)
+		// check if images are at max (10)
 		if (slides.length >= 10) {
 			addImgBtn.style.visibility = 'hidden'
 			return
 		}
-
+		
+		// add image to array
+		imageArray.push(img)
+		
 		const fileUrl = URL.createObjectURL(img)
 
 		const newSlide = `<li class="carousel-slide${slides.length === 0 ? " current-slide" : ""}">
@@ -148,6 +120,7 @@ imageDrop.addEventListener("dragover", e => {
 imageDrop.addEventListener("drop", e => {
 	e.preventDefault()
 	fileInput.files = e.dataTransfer.files
+	addImg()
 })
 
 // image preview
@@ -221,6 +194,8 @@ delBtn.addEventListener("click", e => {
 	const currentDot = dotNav.querySelector('.current-slide')
 	const nextDot = dots[nextIndex]
 	
+	imageArray.pop(slides.indexOf(currentSlide))
+
 	currentSlide.remove()
 	currentDot.remove()
 	positionSlides()
@@ -241,5 +216,48 @@ delBtn.addEventListener("click", e => {
 	if (nextDot) {
 		nextDot.classList.add("current-slide")
 	}
-
 })
+
+// upload post
+document
+.getElementById("postForm")
+	.addEventListener("submit", async function (event) {
+		event.preventDefault()
+
+		const formData = new FormData()
+
+		const title = document.getElementById("title").value
+		// const content = document.getElementById("content").value
+		
+		const delta = quill.getContents()
+		const content = JSON.stringify(delta)
+		
+		// Append the text data to the FormData object
+		formData.append("title", title)
+		formData.append("content", content)
+
+		imageArray.forEach((image) => {
+			formData.append('images', image)
+		})
+
+		try {
+			const response = await fetch("/blogs/post/create", {
+				method: "POST",
+				body: formData,
+			})
+
+			if (response.ok) {
+				const result = await response.json()
+				console.log("Post created:", result)
+				alert("Post created successfully!")
+
+				// Optionally, you can redirect or update the page here
+			} else {
+				console.error("Error creating post:", response.statusText);
+				alert("Failed to create post.")
+			}
+		} catch (error) {
+			console.error("Network error:", error);
+			alert("An error occurred. Please try again.")
+		}
+	})

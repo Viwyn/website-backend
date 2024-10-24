@@ -57,8 +57,7 @@ router.post('/post/create', upload.array('images', 10), async (req, res) => {
     res.status(201).redirect('/blogs/post/' + lastId)
 })
 
-router.get('/post/:id', async (req, res) => {
-
+router.get('/post/:id([0-9]+)', async (req, res) => {
     res.status(200).json({ status: `Loading blog id ${req.params.id}` })
 })
 

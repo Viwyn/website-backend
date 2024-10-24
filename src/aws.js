@@ -1,4 +1,4 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { GetObjectCommand, S3Client, ListObjectsV2Command} from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { Upload } from '@aws-sdk/lib-storage'
 import streamifier from 'streamifier'
@@ -29,6 +29,31 @@ export async function getImageUrl(key) {
         const imgUrl = await getUrl(key)
 
         return (imgUrl)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export async function getAllImageUrls(folder) {
+    const command = new ListObjectsV2Command({
+        Bucket: BUCKET,
+        Prefix: 'posts/' + folder + '/'
+    })
+
+    try {
+        const data = await client.send(command)
+        const imageKeys = data.Contents
+
+        if (!imageKeys) return
+
+        const signedUrls = await Promise.all(imageKeys.map(async (object) => {
+            const url = await getUrl(object.Key)
+            return { key: object.Key, url: url }
+        }))
+
+        signedUrls.reverse()
+
+        return signedUrls
     } catch (err) {
         console.log(err)
     }
