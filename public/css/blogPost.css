@@ -1,0 +1,47 @@
+.post-container {
+    margin: 1rem 2rem;
+    padding: .5rem;
+    width: min(80%, 1500px);
+    display: flex;
+    flex-direction: column;
+    border: 3px solid var(--dark-accent);
+    border-radius: 50px;
+}
+
+.post-container > div {
+    width: 100%;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.author-info p {
+    margin: 0;
+    font-family: 'Poppins';
+}
+
+#author-pfp {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid var(--dark-shade);
+    border-radius: 50%;
+}
+
+.blog-title h2 {
+    margin: 0;
+    font-size: 40px;
+    font-family: 'Poppins';
+}
+
+#image-carousel {
+    height: 1000px;
+}
+
+#content {
+    font-size: 20px;
+    border: none;
+}

@@ -78,7 +78,7 @@ function updateSlides() {
 
 positionSlides()
 
-//image drag n drop
+// adding images
 function addImg() {
 	carousel.style.display = 'flex'
 	const fileArray = Array.from(fileInput.files)

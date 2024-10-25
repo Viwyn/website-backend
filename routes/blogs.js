@@ -58,7 +58,7 @@ router.post('/post/create', upload.array('images', 10), async (req, res) => {
 })
 
 router.get('/post/:id([0-9]+)', async (req, res) => {
-    res.status(200).json({ status: `Loading blog id ${req.params.id}` })
+    res.status(200).render('blogPost', {id: req.params.id})
 })
 
 export default router

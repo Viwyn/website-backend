@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <h2 class="blog-title">
                         ${blog.title}
                     </h2>
-                    <div>
-                        
-                    </div>
                     ${blog.images ? 
                     `<div class="blog-thumbnail">
                         <div class="image-preview">

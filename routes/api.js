@@ -41,11 +41,15 @@ async function getExperiences() {
     }
 }
 
-async function getBlogs() {
+async function getBlogs(id = null) {
     try {
-        const sql = `SELECT b.id, b.title, b.content, b.author, u.pfp, b.created_at, b.updated_at FROM blogs b 
+        var sql = `SELECT b.id, b.title, b.content, b.author, u.pfp, b.created_at, b.updated_at FROM blogs b 
         INNER JOIN users u 
-        ON u.username = b.author;`
+        ON u.username = b.author
+        ${id ?
+            `WHERE id = ${id}`
+            : ""
+        };`
 
         let results = await new Promise ((resolve, reject) => {
             db.all(sql, [], (err, rows) => {
@@ -134,6 +138,16 @@ router.get('/resume', (req, res) => {
 router.get('/blogs', async (req, res) => {
     try {
 		const blogs = await getBlogs();
+		res.status(200).json(blogs);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+})
+
+router.get('/blogs/post/:id([0-9]+)', async (req, res) => {
+    try {
+		const blogs = await getBlogs(req.params.id);
 		res.status(200).json(blogs);
 	} catch (err) {
 		console.error(err);
