@@ -33,7 +33,8 @@ router.post('/', async (req, res, next) => {
                 return res.status(500).send({ error: "Something went wrong during login" })
             }
 
-            req.session.user = user
+            const userWithoutPassword = { username: user.username, pfp: user.pfp }
+            req.session.user = userWithoutPassword
             res.status(201).send({ success: "Logged in successfully", returnTo})
         })
     })(req, res, next)

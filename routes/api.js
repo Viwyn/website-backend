@@ -37,7 +37,7 @@ async function getExperiences() {
 
     } catch (err) {
         console.error(err)
-        return { error: 'Error fetching experience' }
+        return { error: 'Error fetching experiences' }
     }
 }
 
@@ -73,11 +73,31 @@ async function getBlogs(id = null) {
         }))
         
 
+        finalResult.reverse()
         return finalResult
 
     } catch (err) {
         console.error(err)
-        return { error: 'Error fetching experience' }
+        return { error: 'Error fetching blog(s)' }
+    }
+}
+async function getUser(username) {
+    try {
+        var sql = `SELECT username, pfp FROM users WHERE username = '${username}'`
+
+        let result = await new Promise ((resolve, reject) => {
+            db.get(sql, [], (err, row) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(row)
+            })
+        })
+        
+        return result
+    } catch (err) {
+        console.error(err)
+        return { error: 'User does not exist' }
     }
 }
 
@@ -148,11 +168,30 @@ router.get('/blogs', async (req, res) => {
 router.get('/blogs/post/:id([0-9]+)', async (req, res) => {
     try {
 		const blogs = await getBlogs(req.params.id);
-		res.status(200).json(blogs);
+        if (blogs.length > 0) {
+            res.status(200).json(blogs);
+        } else {
+            res.status(404).json({ error: "Post not found" })
+        }
+        
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
+})
+
+router.get('/user/:username', async (req, res) => {
+    try {
+        const user = await getUser(req.params.username)
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ error: "User Not Found" })
+        }
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 })
 
 router.post('/upload', upload.single('file'), async (req, res) => {

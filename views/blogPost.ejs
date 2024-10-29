@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogs | Viwyn</title>
+    <title>Posts | Viwyn</title>
     <link href="/css/blogs.css" rel="stylesheet">
     <script>
         const userId = '<%- locals.id %>'
@@ -12,6 +12,7 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="/css/imageCarousel.css" rel="stylesheet">
     <link href="/css/blogPost.css" rel="stylesheet">
+    <link href="/css/loading.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
 </head>
 
@@ -107,12 +108,17 @@
             </a>
             <input type="search" class="search-bar" placeholder="Search" />
             <a class="user">
-                <img src="/lib/placeholder.jpeg" class="user-pfp" alt="pfp">
+                <img src="/lib/placeholder-user.svg" class="user-pfp" alt="pfp">
             </a>
         </nav>
     </header>
     <main>
-        <div class="post-container">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+        <div class="error"></div>
+        <div class="post-container" >
             <div class="author-info">
                 <img id="author-pfp" src="/lib/placeholder-user.svg" alt="author-pfp">
                 <p id="author-name"></p>

@@ -1,0 +1,33 @@
+.loading-overlay {
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    flex-direction: column;
+}
+
+.spinner {
+    border: 5px solid var(--dark-accent);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spinner-rotate 1s linear infinite
+}
+
+@keyframes spinner-rotate {
+    0% {
+        transform: rotate(0deg);
+    } 100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-family: 'Poppins';
+    font-size: 24px;
+    color: var(--dark-accent);
+}

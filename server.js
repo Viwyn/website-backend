@@ -64,6 +64,8 @@ app.use('/blogs', blogsRouter)
 import {default as userRouter} from "./routes/user.js"
 app.use('/user', userRouter)
 
+import {default as settingsRouter} from "./routes/settings.js"
+app.use('/settings', settingsRouter)
 
 app.all('*', (req, res) => {
     res.status(404).json({ error: "Endpoint is invalid"})

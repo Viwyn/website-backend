@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((username, done) => {
 
-    const sql = `SELECT * FROM users WHERE username = ?;`
+    const sql = `SELECT username, pfp FROM users WHERE username = ?;`
 
     db.get(sql, [username], async (err, row) => {
         if (err) return done(err, null)
@@ -40,7 +40,7 @@ export default passport.use(
 			if (!row) return done(null, false, { message : "User not found" })
 			if (!(await bcrypt.compare(password, row.password))) return done(null, false, { nessage : "Password is incorrect" })
 
-			done(null, row);
+			done(null, { username: row.username, pfp: row.pfp });
 		})
 	})
 );

@@ -4,32 +4,51 @@ const blogTitle = document.getElementById('title')
 const postAuthor = document.getElementById('author-name')
 const postContent = document.getElementById('content')
 
+const loading = document.querySelector('.loading-overlay')
+const blogContainer = document.querySelector('.post-container')
+const errorDiv = document.querySelector('.error')
+
 document.addEventListener("DOMContentLoaded", async () => {
-    const res = await fetch (`/api/blogs/post/${userId}`)
-    const blogData = await(await res.json())[0]
+	try {
+		const res = await (await fetch (`/api/blogs/post/${userId}`)).json()
+		const blogData = await res[0]
 
-    const title = blogData.title
-    const images = blogData.images
-    const content = blogData.content
-    const author = blogData.author
-    const pfp = blogData.pfp
+		if (res.error) {
+			throw new Error(res.error)
+		}
 
-    blogAuthor.textContent += author
-    blogTitle.textContent += title
+		const title = blogData.title
+		const images = blogData.images
+		const content = blogData.content
+		const author = blogData.author
+		const pfp = blogData.pfp
 
-    const quill = new Quill(postContent, {
-        theme: 'snow',
-        modules: {
-            toolbar: false 
-        },
-        readOnly: true 
-    })
+		blogAuthor.textContent += author
+		blogTitle.textContent += title
 
-    const editorContent = JSON.parse(content)
-    quill.setContents(editorContent)
+		const quill = new Quill(postContent, {
+			theme: 'snow',
+			modules: {
+				toolbar: false 
+			},
+			readOnly: true 
+		})
 
-    addImg(images)
+		const editorContent = JSON.parse(content)
+		quill.setContents(editorContent)
 
+		addImg(images)
+
+		blogContainer.style.display = 'flex'
+	} catch (err) {
+		console.log(err)
+		errorDiv.style.display = 'flex'
+		errorDiv.textContent += err
+	} finally {
+		loading.style.display = 'none'
+		positionSlides()
+		updateSlides()
+	}
 })
 
 // everything image
