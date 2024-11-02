@@ -41,49 +41,48 @@ async function getExperiences() {
     }
 }
 
-async function getBlogs(id = null) {
+async function getBlogs(id = null, author = null) {
     try {
-        var sql = `SELECT b.id, b.title, b.content, b.author, u.pfp, b.created_at, b.updated_at FROM blogs b 
+		var sql = `SELECT b.id, b.title, b.content, b.author, u.pfp, b.created_at, b.updated_at FROM blogs b 
         INNER JOIN users u 
         ON u.username = b.author
-        ${id ?
-            `WHERE id = ${id}`
-            : ""
-        };`
+        ${author ? `WHERE b.author = '${author}'` : ""}
+        ${id ? `WHERE b.id = ${id}` : ""};`
 
-        let results = await new Promise ((resolve, reject) => {
-            db.all(sql, [], (err, rows) => {
-                if (err) {
-                    reject(err)
-                }
-                if (!rows) {
-                    reject("No rows")
-                }
-                resolve(rows)
-            })
-        })
-        
-        const finalResult = await Promise.all(results.map(async (element) => {
-            const images = await getAllImageUrls(element.id)
-            if (images) {
-                return { ...element, images}
-            } else {
-                return element
-            }
-        }))
-        
+		let results = await new Promise((resolve, reject) => {
+			db.all(sql, [], (err, rows) => {
+				if (err) {
+					reject(err)
+				}
+				if (!rows) {
+					reject("No rows")
+				}
+				resolve(rows)
+			})
+		})
 
-        finalResult.reverse()
-        return finalResult
+		const finalResult = await Promise.all(
+			results.map(async (element) => {
+				const images = await getAllImageUrls(element.id);
+				if (images) {
+					return { ...element, images }
+				} else {
+					return element
+				}
+			})
+		)
 
-    } catch (err) {
-        console.error(err)
-        return { error: 'Error fetching blog(s)' }
-    }
+		finalResult.reverse()
+		return finalResult
+	} catch (err) {
+		console.error(err)
+		return { error: "Error fetching blog(s)" }
+	}
 }
+
 async function getUser(username) {
     try {
-        var sql = `SELECT username, pfp FROM users WHERE username = '${username}'`
+        var sql = `SELECT username, displayname, pfp, pronouns FROM users WHERE username = '${username}'`
 
         let result = await new Promise ((resolve, reject) => {
             db.get(sql, [], (err, row) => {
@@ -97,7 +96,7 @@ async function getUser(username) {
         return result
     } catch (err) {
         console.error(err)
-        return { error: 'User does not exist' }
+        return { error: 'Error fetching user' }
     }
 }
 
@@ -120,6 +119,26 @@ async function getProjects() {
 
     return res
 }
+
+async function getSocials(username) {
+    try {
+    const sql = `SELECT social, link FROM userLinks WHERE username = '${username}'`;
+
+        let result = await new Promise ((resolve, reject) => {
+            db.all(sql, [], (err, row) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(row)
+            })
+        })
+        
+        return result
+    } catch (err) {
+        console.error(err)
+        return { error: 'Error fetching socials' }
+    }
+} 
 
 router.get('/pfp', async (req, res) => {
     const pfp = await getImage('pfp.png')
@@ -187,6 +206,49 @@ router.get('/user/:username', async (req, res) => {
             res.status(200).json(user)
         } else {
             res.status(404).json({ error: "User Not Found" })
+        }
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+router.get('/user/:username/blogs', async (req, res) => {
+    try {
+        const blogs = await getBlogs(null, req.params.username)
+        if (blogs) {
+            res.status(200).json(blogs)
+        } else {
+            res.status(404).json({ error: "User Blogs Not Found" })
+        }
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+router.get('/user/:username/socials', async (req, res) => {
+    try {
+        const socials = await getSocials(req.params.username)
+        if (socials) {
+            res.status(200).json({ socials: socials })
+        } else {
+            res.status(404).json({ error: "User has no socials" })
+        }
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+
+router.get('/image/:key', async (req, res) => {
+    try {
+        const image = await getImage(`users/${req.params.key}`)
+        if (image) {
+            res.status(200).json({ url: image })
+        } else {
+            res.status(404).json({ error: "User Pfp Not Found" })
         }
     } catch (err) {
         console.error(err)

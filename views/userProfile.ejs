@@ -7,7 +7,8 @@
     <link href="/css/blogs.css" rel="stylesheet">
     <link href="/css/loading.css" rel="stylesheet">
     <link href="/css/userProfile.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>\
     <script>const username = '<%- locals.username %>'</script>
 </head>
 <body>
@@ -28,15 +29,23 @@
             <div class="spinner"></div>
             <div class="loading-text">Loading...</div>
         </div>
-        <div class="user-profile" id="user-profile">
-            <div class="user-profile-left" id="user-pfp">
-                <img src="/lib/placeholder-user.svg">
-                <div>
-                    other stuff
+        <div class="user-profile">
+            <div class="user-profile-left">
+                <img id="user-pfp" src="/lib/placeholder-user.svg" loading="lazy">
+                <div class="user-details">
+                    <div class="user-details-main">
+                        <h2 id="user-display-name"> display name </h2>
+                        <h3 id="user-username"> username </h3>
+                        <h3 id="user-pronouns"> Pronouns </h3>
+                    </div>
+                    <div class="user-details-links">
+                    </div>
                 </div>
             </div>
             <div class="user-profile-right">
-                nwnwdjwndwdnwjdwndj
+                <h1>Blogs</h1>
+                <div class="user-blogs-list" id="user-blogs-list">
+                </div>
             </div>
         </div>
     </main>

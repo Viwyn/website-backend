@@ -46,12 +46,14 @@
 }
 
 #image-carousel {
-    height: 1000px;
+    height: 800px;
+    max-height: 800px;
 }
 
 #content {
     font-size: 20px;
     border: none;
+    height: max-content;
 }
 
 .ql-editor{

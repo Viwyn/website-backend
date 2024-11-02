@@ -162,27 +162,27 @@ document.addEventListener("DOMContentLoaded", function () {
 		.catch((error) => console.error(error));
 });
 
-//rotate pfp on hover
-const pfp = document.getElementById("pfp");
+// //rotate pfp on hover
+// const pfp = document.getElementById("pfp");
 
-document.addEventListener("mousemove", (e) => {
-	rotateElement(e, pfp);
-});
+// document.addEventListener("mousemove", (e) => {
+// 	rotateElement(e, pfp);
+// });
 
-function rotateElement(event, element) {
-	//get mouse pos
-	const x = event.clientX;
-	const y = event.clientY;
+// function rotateElement(event, element) {
+// 	//get mouse pos
+// 	const x = event.clientX;
+// 	const y = event.clientY;
 
-	//get middle
-	const rect = element.getBoundingClientRect();
-	const middleX = rect.left + rect.width / 2;
-	const middleY = rect.top + rect.height / 2;
+// 	//get middle
+// 	const rect = element.getBoundingClientRect();
+// 	const middleX = rect.left + rect.width / 2;
+// 	const middleY = rect.top + rect.height / 2;
 
-	//get offset from middle
-	const offsetX = ((x - middleX) / middleX) * 45;
-	const offsetY = ((y - middleY) / middleY) * 45;
+// 	//get offset from middle
+// 	const offsetX = ((x - middleX) / middleX) * 45;
+// 	const offsetY = ((y - middleY) / middleY) * 45;
 
-	element.style.setProperty("--rotateX", -1 * offsetY + "deg");
-	element.style.setProperty("--rotateY", offsetX + "deg");
-}
+// 	element.style.setProperty("--rotateX", -1 * offsetY + "deg");
+// 	element.style.setProperty("--rotateY", offsetX + "deg");
+// }
